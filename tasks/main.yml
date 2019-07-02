@@ -1,0 +1,54 @@
+---
+# tasks file for guacamole
+- name: Install Guacamole
+  yum:
+    state: latest
+    name:
+      - cairo-devel      
+      - libjpeg-devel      
+      - libpng-devel
+      - uuid-devel
+      - freerdp-devel
+      - pango-devel
+      - libssh2-devel
+#      - libssh-dev
+      - tomcat
+      - libvncserver-devel
+      - libtelnet-devel
+      - tomcat-admin-webapps
+      - tomcat-webapps
+      - gcc
+      - terminus-fonts
+      - mariadb
+      - mariadb-server
+      - mysql-connector-java
+      - python-PyMySQL
+  ignore_errors: true
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  selinux:
+    policy: targeted
+    state: permissive
+  ignore_errors: true
+- name: Stop Firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+  ignore_errors: true
+- include_tasks: mysql.yml
+- name: Start Tomcat
+  service:
+    name: tomcat
+    state: started
+    enabled: yes
+- name: Download war file
+  get_url:
+    url: "http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-1.0.0.war"
+    dest: /var/lib/tomcat/webapps/guacamole.war
+- name: MySQL Guacamole
+  unarchive:
+    src: "http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-jdbc-1.0.0.tar.gz"
+    dest: /tmp/
+    remote_src: yes

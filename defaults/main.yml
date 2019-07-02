@@ -1,0 +1,21 @@
+---
+# defaults file for guacamole
+guac_version: 1.0.0
+guac_root_mysql_password: guacapw2019
+
+guac_packages:
+- name: cairo-devel 
+- name: libjpeg-devel 
+- libpng-devel 
+- uuid-devel 
+- freerdp-devel 
+- pango-devel 
+- libssh2-devel 
+- libssh-dev 
+- tomcat 
+- libvncserver-devel 
+- libtelnet-devel 
+- tomcat-admin-webapps 
+- tomcat-webapps 
+- gcc 
+- terminus-fonts
