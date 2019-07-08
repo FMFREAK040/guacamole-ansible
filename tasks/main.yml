@@ -11,7 +11,7 @@
       - freerdp-devel
       - pango-devel
       - libssh2-devel
-#      - libssh-dev
+      - libssh
       - tomcat
       - libvncserver-devel
       - libtelnet-devel
@@ -23,6 +23,10 @@
       - mariadb-server
       - mysql-connector-java
       - python-PyMySQL
+      - guacd
+      - libguac-client-vnc 
+      - libguac-client-ssh 
+      - libguac-client-rdp
   ignore_errors: true
 - name: Disable SELinux
   selinux:
@@ -52,3 +56,8 @@
     src: "http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/1.0.0/binary/guacamole-auth-jdbc-1.0.0.tar.gz"
     dest: /tmp/
     remote_src: yes
+- name: Start Guacd
+  service:
+    name: guacd
+    state: started
+    enabled: yes
