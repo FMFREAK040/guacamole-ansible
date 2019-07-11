@@ -1,5 +1,5 @@
 ---
-- name: Install MYSQL
+- name: Install MadiaDB
   yum:
     name: mariadb-server
     state: present
@@ -16,9 +16,9 @@
   mysql_user:
     name: root
     host: "{{ item }}"
-    password: "test123"
+    password: "{{ mysql_password }}"
     login_user: root
-    login_password: "test123"
+    login_password: "{{ mysql_password }}"
     check_implicit_admin: yes
     priv: "*.*:ALL,GRANT"
   with_items:
@@ -29,8 +29,9 @@
 - name: Copy the root credentials as .my.cnf file
   template: 
     src: my.cnf.j2 
-    dest: ~/.my.cnf mode=0600
-- name: Copy schem
+    dest: ~/.my.cnf 
+    mode: 0600
+- name: Copy schema
   copy:
     src: "{{ item }}"
     dest: /tmp/ 
@@ -43,11 +44,11 @@
     name: guac_db
     state: present 
     login_user: root 
-    login_password: test123
+    login_password: {{ mysql_password }}
   ignore_errors: yes
 - mysql_db:
     login_user: root
-    login_password: test123
+    login_password: {{ mysql_password }}
     state: import
     name: guac_db
     target: "/tmp/{{ item }}"
