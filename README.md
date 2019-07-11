@@ -13,6 +13,8 @@ Example Playbook
 
     - hosts: servers
       become: yes
+      vars:
+        mysql_password: secretpassword
       roles:
          - guacamole-ansible
 
